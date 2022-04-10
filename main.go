@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -42,15 +43,18 @@ func forward(req *http.Request) (resp *http.Response) {
 		Path: req.URL.Path,
 		RawQuery: req.URL.RawQuery,
 	}
-	request := http.Request{
-		URL: &targetURL,
-		Host: *forwardHost,
-		Method: req.Method,
-		Header: req.Header,
-		Body: req.Body,
+	content, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		panic(err)
 	}
+	request, err := http.NewRequest(req.Method, targetURL.String(), bytes.NewReader(content))
+	if err != nil {
+		panic(err)
+	}
+	request.Header = req.Header
+	request.Host = *forwardHost
 	client := &http.Client{}
-	resp, err := client.Do(&request)
+	resp, err = client.Do(request)
 	if err != nil {
 		log.Println(err)
 	}
