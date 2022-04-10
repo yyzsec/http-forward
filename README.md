@@ -1,6 +1,8 @@
 # http-forward
 A http forward tool
 
+* based on [gin](https://github.com/gin-gonic) framework
+* by yyz
 ### Usage
 ```bash
 Usage of main.exe:
@@ -20,5 +22,5 @@ I can use baidu by visiting
 `http://192.168.111.132:8080/`
 or
 `https://192.168.111.132:8080/`
-
+(note that https may not working well.)
 > Please ignore my .idea file :)
